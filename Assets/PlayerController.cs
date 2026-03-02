@@ -6,19 +6,23 @@ public class PlayerController1 : MonoBehaviour
     public float movespeed = 5f;
     public Vector2 moveInput;
     private Rigidbody2D playerrb;
-    [SerializeField] private Animator Playeraim;
-    private int MoveInputX = Animator.StringToHash("MoveInputX");
-    private int MoveInputY = Animator.StringToHash("MoveInputY");
-    private int IsMoving = Animator.StringToHash("IsMoving");
+    [SerializeField] public Animator Playeraim;
+    private int MoveInputXHash = Animator.StringToHash("MoveInputX");
+    private int MoveInputYHash = Animator.StringToHash("MoveInputY");
+    private int IsMovingHash = Animator.StringToHash("IsMoving");
     private void Awake()
     {
         playerrb = GetComponent<Rigidbody2D>();
         if (playerrb == null) ;
-        Playeraim = GetComponent<Animator>();
+        Playeraim = GetComponentInChildren<Animator>();
+    }
+    private void Update()
+    {
+        HandlePlayerAnimations();
     }
     private void FixedUpdate()
     {
-        HandlePlayerAnimations();
+        HandlePlayerMovement();
     }
     public void HandlePlayerMovement()
     {
@@ -28,14 +32,13 @@ public class PlayerController1 : MonoBehaviour
     {
         if (moveInput != Vector2.zero)
         {
-            Playeraim.SetFloat(MoveInputX, moveInput.x);
-            Playeraim.SetFloat(MoveInputY, moveInput.y);
-            Playeraim.SetBool(IsMoving, true);
-            
+            Playeraim.SetFloat(MoveInputXHash, moveInput.x);
+            Playeraim.SetFloat(MoveInputYHash, moveInput.y);
+            Playeraim.SetBool(IsMovingHash, true);         
         }
         else
         {
-            Playeraim.SetBool(IsMoving, false);
+            Playeraim.SetBool(IsMovingHash, false);
         }
     }
     public void OnMove(InputAction.CallbackContext context)
